@@ -1,9 +1,30 @@
 const Movies = require('../models/movies.models')
+const MovieGenres = require("../models/movies_genres.models")
+const Genres = require("../models/genres.models")
+const { Op } = require('sequelize')
 const uuid = require('uuid')
 
 
-const findAllMovies = async () => {
-    const data = await Movies.findAll()
+const findAllMovies = async (limit, offset, search) => {
+    // limit -> Cuantos quiero mostrar
+    // offset -> Donde empiezo a mostrar
+
+    const queryOptions = {
+        limit: limit,
+        offset: offset,
+        where: {},
+        
+    }
+
+    if(search){
+        queryOptions.where = {
+            title: {
+                [Op.iLike] : `%${search}%`
+            } //Like iLike
+        }
+    }
+
+    const data = await Movies.findAndCountAll(queryOptions)
     return data
 }
 
@@ -11,7 +32,7 @@ const createMovie = async (movieObj) => {
     const newMovie = {
         id: uuid.v4(),
         title: movieObj.title,
-        synopsis : movieObj.synopsis,
+        synopsis: movieObj.synopsis,
         releaseYear: movieObj.releaseYear,
         director: movieObj.director,
         duration: movieObj.duration,
@@ -26,7 +47,31 @@ const createMovie = async (movieObj) => {
 }
 
 
+const addGenreToMovie = async (dataObj) => {
+    const data = await MovieGenres.create({
+        id: uuid.v4(),
+        movieId: dataObj.movieId,
+        genreId: dataObj.genreId
+    })
+    return data
+}
+
+const findAllMoviesByGenre = async (genreId) => {
+    const data = await Movies.findAll({
+        include: {
+            model: MovieGenres,
+            where: {
+                genreId: genreId
+            }
+        }
+    })
+    return data
+}
+
+
 module.exports = {
     findAllMovies,
-    createMovie
+    createMovie,
+    addGenreToMovie,
+    findAllMoviesByGenre
 }

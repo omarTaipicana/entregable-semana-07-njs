@@ -1,0 +1,45 @@
+{
+    "swagger": "2.0",
+    "infoo": {
+        "tiitle": "Mi API de películas",
+        "version": "1.0.0,"
+    },
+    "paths": {
+        "/api/v1/users": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Obtener todos mis usuarios"
+                    },
+                    "400": {
+                        "description": "Ocurrio un error al obtener los usuarios"
+                    }
+                }
+            }
+        },
+        "/api/v1/movies": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Obtener todos mis usuarios"
+                    },
+                    "400": {
+                        "description": "Ocurrio un error al obtener los usuarios"
+                    }
+                }
+            }
+        },
+        "/api/v1/genres": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Obtener todos mis usuarios"
+                    },
+                    "400": {
+                        "description": "Ocurrio un error al obtener los usuarios"
+                    }
+                }
+            }
+        }
+    }
+} 
